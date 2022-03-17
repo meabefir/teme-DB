@@ -48,11 +48,11 @@ public class Taxi extends Vehicle {
 
     @Override
     public double profit() {
-        return noPassengers * charge();
+        return isFunctional() ? noPassengers * charge() : 0.;
     }
 
     @Override
     public void display() {
-
+        System.out.println(this);
     }
 }

@@ -16,7 +16,8 @@ public class BusStation {
 
     public void showAllVehicles() {
         for (int i = 0; i < nVehicles; i++) {
-            System.out.println(vehicles[i].toString());
+//            System.out.println(vehicles[i]);
+            vehicles[i].display();
         }
         System.out.println();
     }
@@ -26,7 +27,7 @@ public class BusStation {
         for (int i = 0; i < nVehicles; i++) {
             profit += vehicles[i].profit();
         }
-        System.out.println("Total profit is " + profit);
+        System.out.println("Total profit is " + profit + '\n');
     }
 
     public void sortVehicles() {
@@ -46,7 +47,7 @@ public class BusStation {
 
         sortVehicles();
 
-        System.out.println("Sorted vehicles are:\n");
+        System.out.println("Sorted vehicles are:");
         showAllVehicles();
     }
 }
