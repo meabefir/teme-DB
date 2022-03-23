@@ -1,5 +1,9 @@
 package com.company;
 
+import com.company.observer.Observable;
+import com.company.observer.Observer;
+import com.company.pizza.Pizza;
+
 public class Client implements Observer {
     String name;
 
