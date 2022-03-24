@@ -1,14 +1,19 @@
-package com.company;
+package com.company.command;
 
 import com.company.observer.Observable;
 import com.company.observer.Observer;
 import com.company.pizza.Pizza;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Client implements Observer {
     String name;
+    List<Pizza> pizzas;
 
     public Client(String name) {
         this.name = name;
+        this.pizzas = new ArrayList<>();
     }
 
     public String getName() {
@@ -17,6 +22,11 @@ public class Client implements Observer {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void buyPizza(Pizza p) {
+        pizzas.add(p);
+        System.out.println("client " + this + " bought pizza " + p);
     }
 
     @Override

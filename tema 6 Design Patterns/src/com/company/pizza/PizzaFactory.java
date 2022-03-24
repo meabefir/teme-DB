@@ -1,6 +1,6 @@
 package com.company.pizza;
 
-import com.company.*;
+import com.company.command.Client;
 import com.company.observer.Observable;
 import com.company.topping.CheeseTopping;
 import com.company.topping.EnumTopping;
@@ -70,5 +70,13 @@ public class PizzaFactory extends Observable {
     public void addClient(Client client) {
         System.out.println("added client " + client);
         this.addObserver(client);
+    }
+
+    public Pizza orderPizza(Pizza pizza) {
+        if (pizzas.contains(pizza)) {
+            pizzas.remove(pizza);
+            return pizza;
+        }
+        return null;
     }
 }

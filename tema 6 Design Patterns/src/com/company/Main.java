@@ -1,5 +1,7 @@
 package com.company;
 
+import com.company.command.Client;
+import com.company.command.CommandOrder;
 import com.company.pizza.EnumPizza;
 import com.company.pizza.Pizza;
 import com.company.pizza.PizzaFactory;
@@ -23,7 +25,13 @@ public class Main {
         Pizza p2 = PizzaFactory.getInstance().makePizza(EnumPizza.Capriciosa, new EnumTopping[]{EnumTopping.Cheese, EnumTopping.Mushrooms});
         Pizza p3 = PizzaFactory.getInstance().makePizza(EnumPizza.QuatroStagioni, new EnumTopping[]{EnumTopping.Pepperoni, EnumTopping.Mushrooms, EnumTopping.Cheese});
 
-        CommandOrder o1 = new CommandOrder();
-        o1.execute(c1, p1);
+        CommandOrder o1 = new CommandOrder(c1, p1);
+        CommandOrder o2 = new CommandOrder(c2, p1);
+        CommandOrder o3 = new CommandOrder(c3, p2);
+        CommandOrder o4 = new CommandOrder(c3, p3);
+        o1.execute();
+        o2.execute();
+        o3.execute();
+        o4.execute();
     }
 }
