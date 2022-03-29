@@ -33,6 +33,17 @@ public class Customer implements Cloneable {
                 '}';
     }
 
+    public Customer(String username, String lastName, String firstName, String phone, String address, String city, String postalCode, String country) {
+        this.username = username;
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.phone = phone;
+        this.address = address;
+        this.city = city;
+        this.postalCode = postalCode;
+        this.country = country;
+    }
+
     public Customer(int ID, String username, String lastName, String firstName, String phone, String address, String city, String postalCode, String country) {
         this.ID = ID;
         this.username = username;
