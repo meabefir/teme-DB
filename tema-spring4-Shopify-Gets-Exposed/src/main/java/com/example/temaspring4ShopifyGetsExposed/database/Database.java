@@ -80,6 +80,23 @@ public class Database {
         return null;
     }
 
+    public static Order getOrderById(int id) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("select * from orders where id=?;");
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            Order order = new Order();
+            order.setId(rs.getInt("id"));
+            order.setOrderDate(rs.getString("order_date"));
+            order.setShippedDate(rs.getString("shipped_date"));
+            order.setStatus(rs.getString("status"));
+            order.setComments(rs.getString("commets"));
+            order.setCustomerId(rs.getInt("customer_id"));
+            return order;
+        }
+        return null;
+    }
+
     public static ArrayList<Customer> getAllCustomers() throws SQLException {
         PreparedStatement ps = connection.prepareStatement("select * from customers;");
         ResultSet rs = ps.executeQuery();
@@ -101,24 +118,76 @@ public class Database {
         return customers;
     }
 
-    public static void updateCustomer(int id, Customer newData) throws SQLException {
-        Customer toModify = getCustomerById(id);
-        if (toModify == null) return;
+    public static ArrayList<Order> getAllOrders() throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("select * from orders;");
+        ResultSet rs = ps.executeQuery();
+        ArrayList<Order> orders = new ArrayList<>();
+        while (rs.next()) {
+            Order order = new Order();
+            order.setId(rs.getInt("id"));
+            order.setOrderDate(rs.getString("order_date"));
+            order.setShippedDate(rs.getString("shipped_date"));
+            order.setStatus(rs.getString("status"));
+            order.setComments(rs.getString("comments"));
+            order.setCustomerId(rs.getInt("customer_id"));
+            orders.add(order);
+        }
+        return orders;
+    }
 
-        PreparedStatement ps = connection.prepareStatement("update customers set id=?, username=?, last_name=?," +
-                " first_name=?, phone=?, address=?, city=?, postal_code=?, country=? where id=?;");
-        ps.setInt(1, newData.getID());
-        ps.setString(2, newData.getUsername());
-        ps.setString(3, newData.getLastName());
-        ps.setString(4, newData.getFirstName());
-        ps.setString(5, newData.getPhone());
-        ps.setString(6, newData.getAddress());
-        ps.setString(7, newData.getCity());
-        ps.setString(8, newData.getPostalCode());
-        ps.setString(9, newData.getCountry());
-        ps.setInt(10, id);
+    public static ArrayList<Order> getOrdersWithCustomerId(int id) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("select * from orders where customer_id=?;");
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+        ArrayList<Order> orders = new ArrayList<>();
+        while (rs.next()) {
+            Order order = new Order();
+            order.setId(rs.getInt("id"));
+            order.setOrderDate(rs.getString("order_date"));
+            order.setShippedDate(rs.getString("shipped_date"));
+            order.setStatus(rs.getString("status"));
+            order.setComments(rs.getString("comments"));
+            order.setCustomerId(rs.getInt("customer_id"));
+            orders.add(order);
+        }
+        return orders;
+    }
 
-        ps.execute();
+    public static Customer updateCustomer(Customer newData) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("update customers set username=?, last_name=?," +
+                " first_name=?, phone=?, address=?, city=?, postal_code=?, country=? where id=?;", Statement.RETURN_GENERATED_KEYS);
+        ps.setString(1, newData.getUsername());
+        ps.setString(2, newData.getLastName());
+        ps.setString(3, newData.getFirstName());
+        ps.setString(4, newData.getPhone());
+        ps.setString(5, newData.getAddress());
+        ps.setString(6, newData.getCity());
+        ps.setString(7, newData.getPostalCode());
+        ps.setString(8, newData.getCountry());
+        ps.setInt(9, newData.getID());
+
+        int affectedRows = ps.executeUpdate();
+        if (affectedRows == 0) {
+            throw new SQLException("creating order failed, no rows affected.");
+        }
+        return getCustomerById(newData.getID());
+    }
+
+    public static Order updateOrder(Order newData) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("update orders set order_date=?, shipped_date=?," +
+                " status=?, comments=?, customer_id=? where id=?;", Statement.RETURN_GENERATED_KEYS);
+        ps.setString(1, newData.getOrderDate());
+        ps.setString(2, newData.getShippedDate());
+        ps.setString(3, newData.getStatus());
+        ps.setString(4, newData.getComments());
+        ps.setInt(5, newData.getCustomerId());
+        ps.setInt(6, newData.getId());
+
+        int affectedRows = ps.executeUpdate();
+        if (affectedRows == 0) {
+            throw new SQLException("creating order failed, no rows affected.");
+        }
+        return getOrderById(newData.getId());
     }
 
     public static Customer insertCustomer(Customer customer) throws SQLException {
@@ -151,10 +220,53 @@ public class Database {
         }
     }
 
+    public static Order insertOrder(Order order) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("insert into orders (order_date, shipped_date, status, comments, customer_id)" +
+                " values (?, ?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
+        ps.setString(1, order.getOrderDate());
+        ps.setString(2, order.getShippedDate());
+        ps.setString(3, order.getStatus());
+        ps.setString(4, order.getComments());
+        ps.setInt(5, order.getCustomerId());
+
+        int affectedRows = ps.executeUpdate();
+
+        if (affectedRows == 0) {
+            throw new SQLException("creating order failed, no rows affected.");
+        }
+
+        Integer newOrderId = null;
+        try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+            if (generatedKeys.next()) {
+                newOrderId = generatedKeys.getInt(1);
+                return getOrderById(newOrderId);
+            }
+            else {
+                throw new SQLException("Creating order failed, no ID obtained.");
+            }
+        }
+    }
+
     public static void deleteCustomerByUsername(String username) throws SQLException {
         PreparedStatement ps = connection.prepareStatement("delete from customers where username=?;");
         ps.setString(1, username);
         ps.execute();
+    }
+
+    public static boolean deleteCustomerById(int id) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("delete from customers where id=?;");
+        ps.setInt(1, id);
+
+        int affectedRows = ps.executeUpdate();
+        return affectedRows != 0;
+    }
+
+    public static boolean deleteOrderById(int id) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("delete from orders where id=?;");
+        ps.setInt(1, id);
+
+        int affectedRows = ps.executeUpdate();
+        return affectedRows != 0;
     }
 
     public static void addOrder(int id, Order order, OrderDetails orderDetails) throws SQLException {
@@ -251,6 +363,23 @@ public class Database {
         ps.setString(1, newComments);
         ps.setInt(2, id);
         ps.execute();
+    }
+
+    public static ArrayList<OrderDetails> getOrderDetailsWithOrderId(int id) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("select * from orderdetails where order_id=?;");
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+        ArrayList<OrderDetails> ordersDetails = new ArrayList<>();
+        while (rs.next()) {
+            OrderDetails orderDetails = new OrderDetails();
+            orderDetails.setId(rs.getInt("id"));
+            orderDetails.setQuantity(rs.getInt("quantity"));
+            orderDetails.setPriceEach(rs.getDouble("price_each"));
+            orderDetails.setOrderId(rs.getInt("order_id"));
+            orderDetails.setProductCode(rs.getString("product_code"));
+            ordersDetails.add(orderDetails);
+        }
+        return ordersDetails;
     }
 }
 

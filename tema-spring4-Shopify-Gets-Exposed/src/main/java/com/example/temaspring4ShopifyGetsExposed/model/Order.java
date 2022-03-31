@@ -1,5 +1,8 @@
 package com.example.temaspring4ShopifyGetsExposed.model;
 
+import lombok.Builder;
+
+@Builder
 public class Order implements Cloneable {
     private int id;
     private String orderDate;

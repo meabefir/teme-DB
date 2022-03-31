@@ -1,6 +1,9 @@
 package com.example.temaspring4ShopifyGetsExposed.model;
 
-public class    Customer implements Cloneable {
+import lombok.Builder;
+
+@Builder
+public class Customer implements Cloneable {
     private int ID;
     private String username;
     private String lastName;
