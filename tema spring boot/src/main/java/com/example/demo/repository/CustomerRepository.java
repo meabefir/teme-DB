@@ -7,5 +7,5 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface CustomerRepository extends CrudRepository <Customer, Integer>{
-    List<Customer> findAllByUsernameAndCityAndCountry(String username, String city, String country);
+//    List<Customer> findAllByUsernameAndCityAndCountry(String username, String city, String country);
 }
