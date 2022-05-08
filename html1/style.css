@@ -165,7 +165,7 @@ p.last {
 
 .modal {
     width: 1000px;
-    /* height: 750px; */
+    height: 750px;
     position: fixed;
     top: calc(50% - 375px);
     background-color: white;
