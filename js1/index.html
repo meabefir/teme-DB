@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transilvania Guide</title>
+    <link rel="stylesheet" href="style.css">
+    <link href='//fonts.googleapis.com/css?family=Montserrat:thin,extra-light,light,100,200,300,400,500,600,700,800' 
+rel='stylesheet' type='text/css'>
+
+<script defer type="module" src="app.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="navbar">
+            <div>TRAVEL UPDATES</div>
+            <div>REVIEWS</div>
+            <div>AOBUT</div>
+            <div>CONTACT</div>
+        </div>
+    
+        <button id="buttonAdd" class="button-add">
+           <pre class="icon">+</pre> ADD ARTICLE
+        </button>
+        
+        <div class="posts" id="posts">
+            <!-- <div class="post">
+                <div class="content">
+                    <h1>
+                        The complete guide to explore Transilvania, with your bike
+                    </h1>
+                    <div class="sub-header">
+                        <div>Destination Europe</div>
+                        <div class="separator">●</div>
+                        <div>Added by <pre class="black">   Jonathat Mercadona</pre></div>
+                        <div class="separator">●</div>
+                        <div>July 01, 2018</div>
+                    </div>
+                </div>
+                <div class="edit-container">
+                    <button>Edit</button>
+                    <button>Delete</button>
+                </div>
+                <img src="bike.jpg" alt="">
+                <div class="content">
+                    <p>
+                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nesciunt aperiam odio doloremque officia quo nulla soluta consequatur provident, repellendus, repellat quos saepe dolore id nemo, recusandae assumenda asperiores sapiente reiciendis neque ipsum animi sit voluptatem accusamus. Est, praesentium nisi. Aliquid, architecto perspiciatis hic illum obcaecati facere ut illo nam quae labore, animi aperiam molestiae totam pariatur. Provident repellat excepturi sint ipsam itaque ratione distinctio dolorum sed aperiam voluptatum, unde magni. Ut eos nostrum dolorum voluptatibus sequi suscipit autem natus ratione tempore. Facilis minus natus voluptatibus! Maxime provident cum ullam quo sed animi accusantium voluptas, dolores soluta molestiae similique corporis at dolorem fugit sint nesciunt sit natus, odit neque ea. Eum voluptates vitae harum animi sit exercitationem delectus illum est provident dolore beatae itaque, fuga repellat voluptatibus hic error quam unde? Repellat dignissimos dolorem minus enim, veniam delectus dolorum fuga vero laudantium, voluptates officiis corrupti in consequatur praesentium dolore reiciendis sapiente, eaque debitis doloribus perspiciatis possimus recusandae. Qui id odit voluptatem voluptate recusandae. Eaque nesciunt repellendus repellat aperiam necessitatibus ex labore sint. Molestias atque veritatis minus debitis eaque accusantium iste consequuntur dicta distinctio maiores hic dignissimos praesentium rem illo magni, sunt enim? Labore explicabo quas in at delectus rem optio ex, praesentium mollitia dicta autem quos excepturi itaque, reiciendis inventore. Saepe labore a sunt consectetur eum. Sint iusto consectetur repudiandae illo cupiditate aliquam assumenda nam unde sapiente eius doloremque sit eos ipsum explicabo, esse perferendis a dolore eaque consequatur voluptatum sed? Consequuntur libero explicabo distinctio tempore minus illo temporibus expedita, delectus facilis rem consectetur eum ab assumenda exercitationem, facere quod, eos provident! Dignissimos magnam voluptatibus repellendus at quam amet ea quo dolore blanditiis quidem ad voluptas quod reiciendis voluptate alias atque hic necessitatibus aliquam debitis corrupti animi repellat, voluptates doloremque quasi. Exercitationem, fugit illum ratione sed quia debitis saepe unde asperiores!
+                    </p>
+                </div>
+            </div> -->
+        </div>
+        
+        <div class="page-nav">
+            <button id="buttonPrev">previous</button>
+            <button id="buttonNext">next</button>
+        </div>
+    </div>
+
+    <div id="modal" class="modal-container hidden">
+        <div class="modal blue-b">
+            <div class="m-title">Add/Edit article</div>
+            <div class="flex-line">
+                <input id="inputTitle" type="text" style="margin-right: 50px;" placeholder="Please enter title">
+                <input id="inputUsername" type="text" placeholder="Please enter username">
+            </div>
+            <div class="flex-line">
+                <input id="inputAuthor" type="text" style="margin-right: 50px;" placeholder="Please enter author">
+                <input id="inputDate" type="text" placeholder="Please enter date">
+            </div>
+            <div class="flex-line">
+                <input id="inputUrl" type="text" placeholder="Please enter image url">
+            </div>
+            <div class="flex-line">
+                <textarea id="inputContent" placeholder="Please enter content" rows="7"> </textarea>
+            </div>
+            <div class="flex-line">
+                <button id="buttonModalCancel" class="button-add">CANCEL</button>
+                <button id="buttonModalSave" class="button-add" style="background-color:var(--color-pink)">SAVE</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
