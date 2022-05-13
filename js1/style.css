@@ -164,13 +164,17 @@ p.last {
     visibility: hidden;
 }
 
+.display-none {
+    display: none;
+}
+
 .page-nav {
     display: flex;
     justify-content: space-between;
     margin-bottom: 100px;
 }
 
-.page-nav > * { 
+.page-nav > * {
     color: var(--color-black);
     font-size: 34px;
     line-height: 42px;

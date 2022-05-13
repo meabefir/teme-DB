@@ -30,6 +30,28 @@ let inputDate = document.getElementById("inputDate");
 let inputUrl = document.getElementById("inputUrl");
 let inputContent = document.getElementById("inputContent");
 
+let selectElement = document.getElementById("select");
+
+selectElement.addEventListener("input", (e) => {
+  let author = e.target.value;
+  let posts = document.getElementsByClassName("post");
+
+  if (author == "All") {
+    for (let post of posts) {
+      post.classList.remove("display-none");
+    }
+    return;
+  }
+
+  for (let post of posts) {
+    if (post.getAttribute("author") != author) {
+      post.classList.add("display-none");
+    } else {
+      post.classList.remove("display-none");
+    }
+  }
+});
+
 buttonModalCancel.addEventListener("click", () => {
   modal.classList.add("hidden");
 });
@@ -65,6 +87,7 @@ const postTemplate = (
 ) => {
   let newPost = document.createElement("div");
   newPost.className = "post";
+  newPost.setAttribute("author", subs[0]);
 
   let content1 = document.createElement("div");
   content1.className = "content";
@@ -171,12 +194,14 @@ buttonModalSave.addEventListener("click", () => {
 async function renderPosts(posts) {
   if (page < 1) {
     console.error("page shouldnt be less than 1");
+    return;
   }
   if (page > Math.ceil(posts.length / POSTS_PER_PAGE)) {
     console.error("page bigger than max");
+    return;
   }
   document.documentElement.scrollTop = 0;
-
+  selectElement.value = "All";
   let current_page = page - 1;
   let from = current_page * 3;
   let to = Math.min(from + 3, posts.length);
@@ -207,6 +232,23 @@ async function renderPosts(posts) {
   }
 }
 
+function shuffle(array) {
+  let currentIndex = array.length,
+    randomIndex;
+
+  while (currentIndex != 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
+  }
+
+  return array;
+}
+
 async function populate() {
   fetch("https://jsonplaceholder.typicode.com/posts")
     .then((res) => res.json())
@@ -215,6 +257,7 @@ async function populate() {
         .then((res) => res.json())
         .then((users) => {
           console.log(users);
+
           posts = posts.map((post) => {
             return {
               ...post,
@@ -234,12 +277,27 @@ async function populate() {
                 ].comments.push(comment);
               }
 
+              shuffle(posts);
               renderPosts(posts);
             });
         });
     });
 }
 
+function buildSelect() {
+  fetch("https://jsonplaceholder.typicode.com/users")
+    .then((res) => res.json())
+    .then((users) => {
+      for (let user of users) {
+        let optionEl = document.createElement("option");
+        optionEl.setAttribute("value", user.name);
+        optionEl.innerText = user.name;
+        selectElement.appendChild(optionEl);
+      }
+    });
+}
+
+buildSelect();
 populate(page);
 
 // postTemplate(
